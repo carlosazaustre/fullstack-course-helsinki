@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import Display from './Display';
-import Button from './Button';
+const Display = props => <div>{props.value}</div>;
 
-const App = (props) => {
-  const [ counter, setCounter ] = useState(0);
-  const setToValue = (value) => () => setCounter(value);
+const Button = ({ handleClick, text }) => {
+  return (
+    <button onClick={handleClick}>
+      {text}
+    </button>
+  );
+}
+
+const App = props => {
+  const [value, setValue] = useState(10);
+  const setToValue = newValue => {
+    setValue(newValue);
+  }
 
   return (
     <div>
-      <Display counter={counter}/>
-      <Button
-        handleClick={setToValue(counter + 1)}
-        text='plus'
-      />
-      <Button
-        handleClick={setToValue(counter - 1)}
-        text='minus'
-      />
-      <Button
-        handleClick={setToValue(0)}
-        text='zero'
-      />
+      <Display value={value}/>
+      <Button handleClick={() => setToValue(1000)} text='thousand' />
+      <Button handleClick={() => setToValue(0)} text='reset' />
+      <Button handleClick={() => setToValue(value + 1)} text='increment' />
     </div>
   )
 }
