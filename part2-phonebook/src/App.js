@@ -6,9 +6,22 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState('');
 
+  const _isAdded = (name, data) => {
+    let isAdded = data.find(el => el.name === name);
+    if (isAdded === undefined) {
+      return false;
+    }
+    return true;
+  } 
+
   const addContact = event => {
     event.preventDefault();
-    setPersons(persons.concat({ name: newName }));
+    if (_isAdded(newName, persons)) {
+      alert(`${newName} is already added to phonebook`);
+    }
+    else {
+      setPersons(persons.concat({ name: newName }));
+    }
     setNewName('');
   }
   
