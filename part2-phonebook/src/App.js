@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+import Filter from './components/Filter';
+import PersonForm from './components/PersonForm';
+import Persons from './components/Persons';
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Carlos Azaustre', number: '12-34-56789' },
@@ -57,36 +61,17 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <p>Filter show with <input onChange={handleSearchName} /></p>
-      {
-        !showAll
-          ? <button onClick={() => setShowAll(!showAll)}>reset</button>
-          : <></>
-      }
+      <Filter onChangeHandler={handleSearchName} />
       <h2>Add a new</h2>
-      <form onSubmit={addContact}>
-        <div>
-          name:
-          <input 
-            value={newName}
-            onChange={handleContactChange}
-          />
-        </div>
-        <div>
-          number:
-          <input
-            value={newNumber}
-            onChange={handleNumberChange}
-          />
-        </div>
-        <div>
-          <button type='submit'>add</button>
-        </div>
-      </form>
+      <PersonForm
+        onSubmitHandler={addContact}
+        newName={newName}
+        onChangeNameHandler={handleContactChange}
+        newNumber={newNumber}
+        onChangeNumberHandler={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      {contactsToShow.map(pers => (
-        <p key={pers.name}>{pers.name} {pers.number}</p>
-      ))}
+      <Persons persons={contactsToShow} />
     </div>
   );
 }
