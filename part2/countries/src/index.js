@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
+import axios from '../../phonebook/node_modules/axios';
 
 
 const CountriesList = ({ list, search }) => {
