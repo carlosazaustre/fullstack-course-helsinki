@@ -14,42 +14,41 @@ const CountriesList = ({ list, search }) => {
     return <p>Too many matches, specify another filter</p>
   }
 
-  if (data.length === 1) {
-    return <CountryDetail name={data[0].name.toLowerCase()}/>
-  }
-
   return (
     <>
-      {data.map(country => (<p key={country.name}>{country.name}</p>))}
+      {data.map(country => <CountryDetail key={country.name} show={false} name={country.name} />)}
     </>
   );
 }
 
 
-const CountryDetail = ({ name }) => {
-  console.log('name', name)
+const CountryDetail = props => {
   const [countryDetail, setCountryDetail] = useState([]);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     axios
-      .get(`https://restcountries.eu/rest/v2/name/${name}`)
+      .get(`https://restcountries.eu/rest/v2/name/${props.name}`)
       .then(response => {
         setCountryDetail(response.data[0]);
       })
-  }, [name]);
+  }, [props.name]);
 
-  return (
-    <div>
-      <h2>{countryDetail.name}</h2>
-      <p>capital {countryDetail.capital}</p>
-      <p>population {countryDetail.population}</p>
-      <h3>Languages</h3>
-      <ul>
-        {countryDetail.languages && countryDetail.languages.map(lang => <li key={lang.name}>{lang.name}</li>)}
-      </ul>
-      <img src={countryDetail.flag} height="150" alt={`${countryDetail.name} flag`} />
-    </div>
-  );
+  return show
+    ? (<div>
+        <h2>{countryDetail.name}</h2>
+        <p>capital {countryDetail.capital}</p>
+        <p>population {countryDetail.population}</p>
+        <h3>Languages</h3>
+        <ul>
+          {countryDetail.languages && countryDetail.languages.map(lang => <li key={lang.name}>{lang.name}</li>)}
+        </ul>
+        <img src={countryDetail.flag} height="150" alt={`${countryDetail.name} flag`} />
+      </div>)
+    : (<p key={countryDetail.name}>
+        {countryDetail.name}
+        <button onClick={() => setShow(!show)}>show</button>
+      </p>)
 }
 
 
