@@ -2,10 +2,24 @@ import React, { useState } from 'react';
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Carlos Azaustre'}
+    { name: 'Carlos Azaustre', number: '12-34-56789' },
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [searchName, setSearchName] = useState('');
+  const [showAll, setShowAll] = useState(true);
+
+  const contactsToShow = showAll
+    ? persons
+    : persons.filter(person => {
+        let toFilter = person.name.toLocaleLowerCase();
+        let toSearch = searchName.toLowerCase()
+        return toFilter.includes(toSearch);
+      });
 
   const _isAdded = (name, data) => {
     let isAdded = data.find(el => el.name === name);
@@ -35,9 +49,21 @@ const App = () => {
     setNewNumber(event.target.value);
   }
 
+  const handleSearchName = event => {
+    setSearchName(event.target.value);
+    setShowAll(false);
+  }
+
   return (
     <div>
-      <h2>phonebook</h2>
+      <h2>Phonebook</h2>
+      <p>Filter show with <input onChange={handleSearchName} /></p>
+      {
+        !showAll
+          ? <button onClick={() => setShowAll(!showAll)}>reset</button>
+          : <></>
+      }
+      <h2>Add a new</h2>
       <form onSubmit={addContact}>
         <div>
           name:
@@ -58,7 +84,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(pers => (
+      {contactsToShow.map(pers => (
         <p key={pers.name}>{pers.name} {pers.number}</p>
       ))}
     </div>
