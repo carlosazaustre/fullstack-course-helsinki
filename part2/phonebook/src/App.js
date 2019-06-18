@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
+import personService from './services/persons';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
@@ -12,14 +12,13 @@ const App = () => {
   const [searchName, setSearchName] = useState('');
   const [showAll, setShowAll] = useState(true);
 
-  const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data);
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons);
       });
-  }
-  useEffect(hook, []);
+  }, []);
 
   const contactsToShow = showAll
     ? persons
@@ -39,14 +38,24 @@ const App = () => {
 
   const addContact = event => {
     event.preventDefault();
-    if (_isAdded(newName, persons)) {
-      alert(`${newName} is already added to phonebook`);
+    const personObject = {
+      name: newName,
+      number: newNumber,
+      id: persons.length + 1
     }
-    else {
-      setPersons(persons.concat({ name: newName, number: newNumber }));
-    }
-    setNewName('');
-    setNewNumber('')
+
+    personService
+      .create(personObject)
+      .then(returnedNote => {
+        if (_isAdded(newName, persons)) {
+          alert(`${newName} is already added to phonebook`);
+        }
+        else {
+          setPersons(persons.concat({ name: newName, number: newNumber }));
+        }
+        setNewName('');
+        setNewNumber('');
+      })
   }
   
   const handleContactChange = event => {
