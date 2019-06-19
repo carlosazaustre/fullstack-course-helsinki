@@ -57,6 +57,15 @@ const App = () => {
         setNewNumber('');
       })
   }
+
+  const deletePerson = id => {
+    personService
+      .remove(id)
+      .then(() => {
+        const updatedPersons = persons.filter(p => p.id !== id);
+        setPersons(updatedPersons);
+      })
+  }
   
   const handleContactChange = event => {
     setNewName(event.target.value);
@@ -71,6 +80,7 @@ const App = () => {
     setShowAll(false);
   }
 
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -84,7 +94,10 @@ const App = () => {
         onChangeNumberHandler={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={contactsToShow} />
+      <Persons
+        persons={contactsToShow}
+        onDelete={deletePerson}
+      />
     </div>
   );
 }

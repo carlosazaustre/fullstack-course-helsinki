@@ -1,9 +1,12 @@
 import React from 'react';
 
-const Persons = ({ persons }) => ( 
+const Persons = ({ persons, onDelete }) => (  
   <>
     {persons.map(pers => (
-      <p key={pers.name}>{pers.name} {pers.number}</p>
+      <p key={pers.id}>
+        {pers.name} {pers.number}
+        <button onClick={() => onDelete(pers.id)}>delete</button>
+      </p>
     ))}
   </>
 );
