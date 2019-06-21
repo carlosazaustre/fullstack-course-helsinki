@@ -38,24 +38,49 @@ const App = () => {
 
   const addContact = event => {
     event.preventDefault();
-    const personObject = {
-      name: newName,
-      number: newNumber,
-      id: persons.length + 1
-    }
+    debugger;
+    // Check if the contact already exists
+    const toUpdate = persons.filter(p => {
+      debugger;
+      return p.name.includes(newName);
+    });
+    if (toUpdate.length === 1) {
+      const confirm = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`);
+      if (confirm) {
+        
+        personService
+          .update(toUpdate[0].id, {
+            id: toUpdate[0].id,
+            name: toUpdate[0].name,
+            number: newNumber
+          })
+          .then(updatedPerson => {
+            setPersons(persons.concat({ name: newName, number: newNumber }));
+            setNewName('');
+            setNewNumber('');
+          })
+      }
+    } else {
+      // if not, save the person
+      const personObject = {
+        name: newName,
+        number: newNumber,
+        id: persons.length + 1
+      }
 
-    personService
-      .create(personObject)
-      .then(returnedNote => {
-        if (_isAdded(newName, persons)) {
-          alert(`${newName} is already added to phonebook`);
-        }
-        else {
-          setPersons(persons.concat({ name: newName, number: newNumber }));
-        }
-        setNewName('');
-        setNewNumber('');
-      })
+      personService
+        .create(personObject)
+        .then(returnedNote => {
+          if (_isAdded(newName, persons)) {
+            alert(`${newName} is already added to phonebook`);
+          }
+          else {
+            setPersons(persons.concat({ name: newName, number: newNumber }));
+          }
+          setNewName('');
+          setNewNumber('');
+        });
+    }
   }
 
   const deletePerson = id => {
