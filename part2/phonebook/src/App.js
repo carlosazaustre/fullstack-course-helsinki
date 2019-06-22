@@ -38,24 +38,24 @@ const App = () => {
 
   const addContact = event => {
     event.preventDefault();
-    debugger;
     // Check if the contact already exists
     const toUpdate = persons.filter(p => {
-      debugger;
       return p.name.includes(newName);
     });
     if (toUpdate.length === 1) {
       const confirm = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`);
       if (confirm) {
-        
+        debugger;
+        const updatedPersons = persons.filter(p => p.id !== toUpdate[0].id);
+        setPersons(updatedPersons);
+
         personService
           .update(toUpdate[0].id, {
-            id: toUpdate[0].id,
-            name: toUpdate[0].name,
+            ...toUpdate[0],
             number: newNumber
           })
           .then(updatedPerson => {
-            setPersons(persons.concat({ name: newName, number: newNumber }));
+            setPersons([...persons, { name: newName, number: newNumber }]);
             setNewName('');
             setNewNumber('');
           })
@@ -75,7 +75,7 @@ const App = () => {
             alert(`${newName} is already added to phonebook`);
           }
           else {
-            setPersons(persons.concat({ name: newName, number: newNumber }));
+            setPersons([...persons, { name: newName, number: newNumber }]);
           }
           setNewName('');
           setNewNumber('');
