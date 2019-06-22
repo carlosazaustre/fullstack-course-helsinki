@@ -45,17 +45,15 @@ const App = () => {
     if (toUpdate.length === 1) {
       const confirm = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`);
       if (confirm) {
-        debugger;
-        const updatedPersons = persons.filter(p => p.id !== toUpdate[0].id);
-        setPersons(updatedPersons);
-
         personService
           .update(toUpdate[0].id, {
             ...toUpdate[0],
             number: newNumber
           })
           .then(updatedPerson => {
-            setPersons([...persons, { name: newName, number: newNumber }]);
+            let updatedState = persons.filter(p => p.id !== updatedPerson.id);
+            updatedState = [...updatedState, updatedPerson];
+            setPersons(updatedState);
             setNewName('');
             setNewNumber('');
           })
