@@ -13,6 +13,7 @@ const App = () => {
   const [searchName, setSearchName] = useState('');
   const [showAll, setShowAll] = useState(true);
   const [notificationMessage, setNotificationMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personService
@@ -63,6 +64,12 @@ const App = () => {
               setNotificationMessage(null)
             }, 2000);
           })
+          .catch(error => {
+            setErrorMessage(`Information of ${newName} has already been removed from server`);
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000);
+          })
       }
     } else {
       // if not, save the person
@@ -87,7 +94,13 @@ const App = () => {
           }, 2000);
           setNewName('');
           setNewNumber('');
-        });
+        })
+        .catch(error => {
+          setErrorMessage(`Information of ${newName} has already been removed from server`);
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000);
+        })
     }
   }
 
@@ -118,6 +131,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={notificationMessage} />
+      <Notification type={"error"} message={errorMessage} />
       <Filter onChangeHandler={handleSearchName} />
       <h2>Add a new</h2>
       <PersonForm
