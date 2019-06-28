@@ -29,6 +29,16 @@ app.get('/api/persons', (req, res) => {
   res.json(persons);
 });
 
+app.get('/api/persons/:id', (req, res) => {
+  const { id } = req.params;
+  const found = persons.find(el => el.id === Number(id));
+  if (found !== undefined) {
+    return res.json(found);
+  }
+
+  return res.status(404).end();
+})
+
 app.get('/info', (req, res) => {
   const length = persons.length;
   const date = new Date();
