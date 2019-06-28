@@ -1,8 +1,12 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express();
 const port = 3001;
 
-const persons = [
+app.use(bodyParser.json());
+
+let persons = [
   {
     name: 'Arto Hellas',
     number: '040-123456',
@@ -25,6 +29,22 @@ const persons = [
   }
 ];
 
+const generateId = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+app.post('/api/persons', (req, res) => {
+  const body = req.body;
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId(9999)
+  };
+  persons = persons.concat(person);
+  res.json(person);
+
+});
+
 app.get('/api/persons', (req, res) => {
   res.json(persons);
 });
@@ -37,7 +57,7 @@ app.get('/api/persons/:id', (req, res) => {
   }
 
   return res.status(404).end();
-})
+});
 
 app.get('/info', (req, res) => {
   const length = persons.length;
