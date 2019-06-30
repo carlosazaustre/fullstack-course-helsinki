@@ -5,8 +5,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3001;
 
+morgan.token('body', (req, res) => {
+  return JSON.stringify(req.body);
+})
+
 app.use(bodyParser.json());
-app.use(morgan('tiny'));
+app.use(morgan(':method :url - :body'));
 
 let persons = [
   {
