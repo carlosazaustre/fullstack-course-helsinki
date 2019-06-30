@@ -34,7 +34,18 @@ const generateId = (max) => {
 }
 
 app.post('/api/persons', (req, res) => {
-  const body = req.body;
+  const { body } = req;
+  if (!body.name) {
+    return res.status(500).json({ error: 'name is missing' });
+  }
+  if (!body.number) {
+    return res.status(500).json({ error: 'number is missing' })
+  }
+
+  if (persons.find(el => el.name === body.name)) {
+    return res.status(500).json({ error: 'name must be unique' });
+  }
+
   const person = {
     name: body.name,
     number: body.number,
@@ -42,7 +53,6 @@ app.post('/api/persons', (req, res) => {
   };
   persons = persons.concat(person);
   res.json(person);
-
 });
 
 app.get('/api/persons', (req, res) => {
