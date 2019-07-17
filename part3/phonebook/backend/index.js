@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 morgan.token('body', (req, res) => {
   return JSON.stringify(req.body);
@@ -11,6 +11,7 @@ morgan.token('body', (req, res) => {
 
 app.use(bodyParser.json());
 app.use(morgan(':method :url - :body'));
+app.use(express.static('build'));
 
 let persons = [
   {
