@@ -37,7 +37,7 @@ const App = () => {
       return false;
     }
     return true;
-  } 
+  }
 
   const addContact = event => {
     event.preventDefault();
@@ -76,7 +76,6 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1
       }
 
       personService
@@ -112,7 +111,7 @@ const App = () => {
         setPersons(updatedPersons);
       })
   }
-  
+
   const handleContactChange = event => {
     setNewName(event.target.value);
   }
