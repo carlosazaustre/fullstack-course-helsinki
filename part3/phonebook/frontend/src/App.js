@@ -80,7 +80,7 @@ const App = () => {
 
       personService
         .create(personObject)
-        .then(returnedNote => {
+        .then(returnedPerson => {
           if (_isAdded(newName, persons)) {
             alert(`${newName} is already added to phonebook`);
           }
@@ -95,7 +95,7 @@ const App = () => {
           setNewNumber('');
         })
         .catch(error => {
-          setErrorMessage(`Information of ${newName} has already been removed from server`);
+          setErrorMessage(`${error.response.data.error}`);
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000);
@@ -129,8 +129,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification type="error" message={errorMessage} />
       <Notification message={notificationMessage} />
-      <Notification type={"error"} message={errorMessage} />
       <Filter onChangeHandler={handleSearchName} />
       <h2>Add a new</h2>
       <PersonForm

@@ -8,6 +8,6 @@
   margin-bottom: 10px;
 }
 
-.notification .error {
-  color: red;
+.notification-error {
+  color: red !important;
 }
