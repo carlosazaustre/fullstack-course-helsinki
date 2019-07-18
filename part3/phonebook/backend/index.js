@@ -7,13 +7,27 @@ const Person = require('./models/person');
 const app = express();
 const port = process.env.PORT || 3001;
 
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' });
+}
+
+const errorHandler = (error, request, response, next) => {
+  console.log(error.message);
+
+  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+    response.status(400).send({ error: 'malformatted id' });
+  }
+
+  next(error);
+}
+
 morgan.token('body', (req, res) => {
   return JSON.stringify(req.body);
 })
 
-app.use(bodyParser.json());
 app.use(morgan(':method :url - :body'));
 app.use(express.static('build'));
+app.use(bodyParser.json());
 
 app.post('/api/persons', (req, res) => {
   const { body } = req;
@@ -56,7 +70,10 @@ app.get('/info', (req, res) => {
   const length = persons.length;
   const date = new Date();
   res.send(`Phonebook has info for ${length} people\n${date}`);
-})
+});
+
+app.use(unknownEndpoint);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`API running on http://localhost:${port}`);
