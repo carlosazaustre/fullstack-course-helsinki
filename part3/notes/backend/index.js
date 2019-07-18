@@ -56,11 +56,10 @@ app.post('/api/notes', (req, res, next) => {
   });
 
   note.save()
-    .then(savedNote => {
-      res.json(savedNote.toJSON());
-    })
+    .then(savedNote => savedNote.toJSON())
+    .then(savedAndFormattedNote => res.json(savedAndFormattedNote))
     .catch(error => next(error));
-})
+});
 
 app.get('/api/notes/:id', (req, res, next) => {
   Note.findById(req.params.id)
