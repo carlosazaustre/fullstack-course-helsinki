@@ -16,6 +16,8 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError' && error.kind == 'ObjectId') {
     response.status(400).send({ error: 'malformatted id' });
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message });
   }
 
   next(error);
@@ -29,23 +31,18 @@ app.use(morgan(':method :url - :body'));
 app.use(express.static('build'));
 app.use(bodyParser.json());
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const { body } = req;
-  if (!body.name) {
-    return res.status(500).json({ error: 'name is missing' });
-  }
-  if (!body.number) {
-    return res.status(500).json({ error: 'number is missing' })
-  }
 
   const person = new Person({
     name: body.name,
     number: body.number,
   });
 
-  person.save().then(savedPerson => {
-    res.json(savedPerson.toJSON());
-  });
+  person.save()
+    .then(savedPerson => savedPerson.toJSON())
+    .then(savedAndFormattedPerson => res.json(savedAndFormattedPerson))
+    .catch(error => next(error));
 });
 
 app.get('/api/persons', (req, res, next) => {
