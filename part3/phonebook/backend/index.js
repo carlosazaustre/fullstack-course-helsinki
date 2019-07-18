@@ -9,23 +9,23 @@ const port = process.env.PORT || 3001;
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
-}
+};
 
 const errorHandler = (error, request, response, next) => {
   console.log(error.message);
 
-  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
     response.status(400).send({ error: 'malformatted id' });
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message });
   }
 
   next(error);
-}
+};
 
-morgan.token('body', (req, res) => {
+morgan.token('body', (req) => {
   return JSON.stringify(req.body);
-})
+});
 
 app.use(morgan(':method :url - :body'));
 app.use(express.static('build'));
@@ -48,14 +48,14 @@ app.post('/api/persons', (req, res, next) => {
 app.get('/api/persons', (req, res, next) => {
   Person.find({})
     .then(people => res.json(people.map(person => person.toJSON())))
-    .catch(error => next(error))
+    .catch(error => next(error));
 });
 
 
 app.get('/api/persons/:id', (req, res, next) => {
   Person.findById(req.params.id)
     .then(person => res.json(person.toJSON()))
-    .catch(error => next(error))
+    .catch(error => next(error));
 });
 
 app.put('/api/persons/:id', (req, res, next) => {
@@ -68,11 +68,11 @@ app.put('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndUpdate(req.params.id, person, { new: true })
     .then(updatedPerson => res.json(updatedPerson.toJSON()))
     .catch(error => next(error));
-})
+});
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
-    .then(result => res.status(204).end())
+    .then(() => res.status(204).end())
     .catch(error => next(error));
 });
 
