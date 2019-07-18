@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const cors = require('cors');
 const Note = require('./models/note');
 
 const app = express();
@@ -13,23 +13,23 @@ const requestLogger = (request, response, next) => {
   console.log('Body: ', request.body);
   console.log('---');
   next();
-}
+};
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' });
-}
+};
 
 const errorHandler = (error, request, response, next) => {
   console.log(error.message);
 
-  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
     response.status(400).send({ error: 'malformatted id' });
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message });
   }
 
   next(error);
-}
+};
 
 app.use(cors());
 app.use(express.static('build'));
@@ -70,7 +70,7 @@ app.get('/api/notes/:id', (req, res, next) => {
         res.status(204).end();
       }
     })
-    .catch(error => next(error))
+    .catch(error => next(error));
 });
 
 app.put('/api/notes/:id', (req, res, next) => {
@@ -90,13 +90,13 @@ app.put('/api/notes/:id', (req, res, next) => {
 
 app.delete('/api/notes/:id', (req, res, next) => {
   Note.findByIdAndRemove(req.params.id)
-    .then(result => res.status(204).end())
-    .catch(error => next(error))
+    .then(() => res.status(204).end())
+    .catch(error => next(error));
 });
 
 app.use(unknownEndpoint);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`);
 });

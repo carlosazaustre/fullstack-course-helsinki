@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
     "start": "node index.js",
     "watch": "nodemon index.js",
     "build:ui": "rm -rf build && cd ../frontend/ && npm run build --prod && cp -r build ../backend",
@@ -20,6 +21,7 @@
     "mongoose": "^5.6.4"
   },
   "devDependencies": {
+    "eslint": "^6.0.1",
     "nodemon": "^1.19.0"
   },
   "engines": {

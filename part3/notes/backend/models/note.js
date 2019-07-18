@@ -5,7 +5,7 @@ console.log('Connecting to', url);
 
 mongoose.set('useFindAndModify', false);
 mongoose.connect(url, { useNewUrlParser: true })
-  .then(result => {
+  .then(() => {
     console.log('connected to MongoDB');
   })
   .catch(error => {
