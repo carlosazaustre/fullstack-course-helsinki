@@ -80,9 +80,11 @@ app.delete('/api/persons/:id', (req, res, next) => {
 });
 
 app.get('/info', (req, res) => {
-  const length = persons.length;
-  const date = new Date();
-  res.send(`Phonebook has info for ${length} people\n${date}`);
+  Person.find({}).then(people => {
+    const length = people.length;
+    const date = new Date();
+    res.send(`Phonebook has info for ${length} people at ${date}`);
+  });
 });
 
 app.use(unknownEndpoint);
