@@ -46,6 +46,12 @@ app.get('/api/persons/:id', (req, res) => {
   });
 });
 
+app.delete('/api/persons/:id', (req, res, next) => {
+  Person.findByIdAndRemove(req.params.id)
+    .then(result => res.status(204).end())
+    .catch(error => next(error));
+});
+
 app.get('/info', (req, res) => {
   const length = persons.length;
   const date = new Date();
