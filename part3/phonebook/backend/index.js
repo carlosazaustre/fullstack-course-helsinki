@@ -48,17 +48,30 @@ app.post('/api/persons', (req, res) => {
   });
 });
 
-app.get('/api/persons', (req, res) => {
-  Person.find({}).then(people => {
-    res.json(people.map(person => person.toJSON()));
-  });
+app.get('/api/persons', (req, res, next) => {
+  Person.find({})
+    .then(people => res.json(people.map(person => person.toJSON())))
+    .catch(error => next(error))
 });
 
-app.get('/api/persons/:id', (req, res) => {
-  Person.findById(req.params.id).then(person => {
-    res.json(person.toJSON());
-  });
+
+app.get('/api/persons/:id', (req, res, next) => {
+  Person.findById(req.params.id)
+    .then(person => res.json(person.toJSON()))
+    .catch(error => next(error))
 });
+
+app.put('/api/persons/:id', (req, res, next) => {
+  const body = req.body;
+  const person = {
+    name: body.name,
+    number: body.number
+  };
+
+  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+    .then(updatedPerson => res.json(updatedPerson.toJSON()))
+    .catch(error => next(error));
+})
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndRemove(req.params.id)
