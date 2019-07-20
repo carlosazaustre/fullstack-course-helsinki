@@ -49,9 +49,31 @@ const mostBlogs = (blogs) => {
   };
 };
 
+const mostLikes = (blogs) => {
+  const uniqueAuthors = {};
+
+  blogs.forEach((blog) => {
+    if (!uniqueAuthors[blog.author]) {
+      uniqueAuthors[blog.author] = blog.likes;
+    } else {
+      uniqueAuthors[blog.author] += blog.likes;
+    }
+  });
+
+  const mostAuthorLikes = Object
+    .entries(uniqueAuthors)
+    .sort((a, b) => b[1] - a[1])[0];
+
+  return {
+    author: mostAuthorLikes[0],
+    likes: mostAuthorLikes[1],
+  };
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
