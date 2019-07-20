@@ -1,3 +1,21 @@
+/* eslint-disable no-underscore-dangle */
+function _orderArray(originalArray, property, value) {
+  const toOrderArray = {};
+  originalArray.forEach((item) => {
+    if (!toOrderArray[item[property]]) {
+      // eslint-disable-next-line no-param-reassign
+      toOrderArray[item[property]] = value ? item[value] : 1;
+    } else {
+      // eslint-disable-next-line no-param-reassign
+      toOrderArray[item[property]] += value ? item[value] : 1;
+    }
+  });
+
+  return Object
+    .entries(toOrderArray)
+    .sort((a, b) => b[1] - a[1])[0];
+}
+
 const dummy = (blogs) => {
   return 1;
 };
@@ -29,19 +47,7 @@ const favoriteBlog = (blogs) => {
 };
 
 const mostBlogs = (blogs) => {
-  const uniqueAuthors = {};
-
-  blogs.forEach((blog) => {
-    if (!uniqueAuthors[blog.author]) {
-      uniqueAuthors[blog.author] = 1;
-    } else {
-      uniqueAuthors[blog.author] += 1;
-    }
-  });
-
-  const mostAuthorBlogs = Object
-    .entries(uniqueAuthors)
-    .sort((a, b) => b[1] - a[1])[0];
+  const mostAuthorBlogs = _orderArray(blogs, 'author');
 
   return {
     author: mostAuthorBlogs[0],
@@ -50,19 +56,7 @@ const mostBlogs = (blogs) => {
 };
 
 const mostLikes = (blogs) => {
-  const uniqueAuthors = {};
-
-  blogs.forEach((blog) => {
-    if (!uniqueAuthors[blog.author]) {
-      uniqueAuthors[blog.author] = blog.likes;
-    } else {
-      uniqueAuthors[blog.author] += blog.likes;
-    }
-  });
-
-  const mostAuthorLikes = Object
-    .entries(uniqueAuthors)
-    .sort((a, b) => b[1] - a[1])[0];
+  const mostAuthorLikes = _orderArray(blogs, 'author', 'likes');
 
   return {
     author: mostAuthorLikes[0],
