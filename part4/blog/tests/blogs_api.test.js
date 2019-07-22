@@ -65,9 +65,24 @@ describe('Blogs API', () => {
       .send(newBlog)
       .expect(200)
       .expect('Content-Type', /application\/json/);
-    
+
     expect(response.body.likes).toBeDefined();
     expect(response.body.likes).toBe(0);
+  });
+
+  test('blog post without title and url properties is not added', async () => {
+    const newBlog = {
+      author: 'Jest',
+      likes: 10,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length);
   });
 });
 
