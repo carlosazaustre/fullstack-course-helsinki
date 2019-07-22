@@ -31,6 +31,27 @@ describe('Blogs API', () => {
     const blog = response.body[0];
     expect(blog.id).toBeDefined();
   });
+
+  test('a valid blog post can be added', async () => {
+    const newBlog = {
+      title: 'test title',
+      author: 'jest',
+      url: 'http://localhost',
+      likes: 1,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1);
+
+    const titles = blogsAtEnd.map(b => b.title);
+    expect(titles).toContain('test title');
+  });
 });
 
 afterAll(() => {
