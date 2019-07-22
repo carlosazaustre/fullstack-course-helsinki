@@ -13,7 +13,19 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-describe('blogs', () => {
+describe('Blogs API', () => {
+  test('blogs posts are returned as JSON', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+  });
+
+  test('all blog posts are returned', async () => {
+    const response = await api.get('/api/blogs');
+    expect(response.body.length).toBe(helper.initialBlogs.length);
+  });
+
   test('unique identifier property of the blogposts is named id', async () => {
     const response = await api.get('/api/blogs');
     const blog = response.body[0];
