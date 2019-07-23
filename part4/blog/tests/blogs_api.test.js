@@ -91,6 +91,23 @@ describe('when there is initially some blog posts saved', () => {
     });
   });
 
+  describe('updating a blog post', () => {
+    test('succeeds with a valid id', async () => {
+      const blogsAtStart = await helper.blogsInDb();
+      const blogToUpdate = blogsAtStart[0];
+
+      const updatedBlog = await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send({})
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+
+      const blogsAtEnd = await helper.blogsInDb();
+      expect(blogsAtEnd.length).toBe(helper.initialBlogs.length);
+      expect(updatedBlog.body.likes).toBe(blogToUpdate.likes + 1);
+    });
+  });
+
   describe('deletion of a blog post', () => {
     test('succeeds with status code 200 if id is valid', async () => {
       const blogsAtStart = await helper.blogsInDb();
