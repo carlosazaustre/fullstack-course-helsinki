@@ -10,7 +10,11 @@ const notesRouter = require('./controllers/notes');
 const app = express();
 
 logger.info('connecting to', config.MONGODB_URI);
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
+mongoose
+  .connect(config.MONGODB_URI, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+  })
   .then(() => {
     logger.info('connected to MongoDB');
   })

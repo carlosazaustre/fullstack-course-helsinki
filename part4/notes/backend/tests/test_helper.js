@@ -3,18 +3,22 @@ const Note = require('../models/note');
 const initialNotes = [
   {
     content: 'HTML is easy',
-    date: new Date().toString(),
+    date: new Date(),
     important: false,
   },
   {
     content: 'Browser can execute only Javascript',
-    date: new Date().toString(),
+    date: new Date(),
     important: true,
   },
 ];
 
 const nonExistingId = async () => {
-  const note = new Note({ content: 'willremovethissoon' });
+  const note = new Note({
+    content: 'willremovethissoon',
+    date: new Date(),
+    important: false,
+  });
   await note.save();
   await note.remove();
 
