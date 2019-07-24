@@ -16,11 +16,13 @@
   "author": "Carlos Azaustre <cazaustre@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
-    "mongoose": "^5.6.4"
+    "mongoose": "^5.6.4",
+    "mongoose-unique-validator": "^2.0.3"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
