@@ -23,7 +23,9 @@ loginRouter.post('/', async (request, response, next) => {
     const userForToken = { username: user.username, id: user._id };
     const token = jwt.sign(userForToken, config.SECRET);
 
-    response.status(200).send(user.toJSON());
+    response
+      .status(200)
+      .send({ token, username: user.username, name: user.name });
   } catch (exception) {
     next(exception);
   }
