@@ -6,7 +6,12 @@ let token = null;
 
 const setToken = newToken => {
   token = `bearer ${newToken}`;
+};
+
+const unsetToken = () => {
+  token = null;
 }
+
 const getAll = async () => {
   const response = await axios.get(baseUrl);
   return response.data;
@@ -14,5 +19,6 @@ const getAll = async () => {
 
 export default {
   setToken,
+  unsetToken,
   getAll,
 };
