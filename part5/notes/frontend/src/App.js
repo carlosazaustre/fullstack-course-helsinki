@@ -9,7 +9,7 @@ import loginService from './services/login'
 import Togglable from './components/Togglable';
 import NoteForm from './components/NoteForm';
 
-const App = props => {
+const App = () => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
@@ -59,6 +59,17 @@ const App = props => {
     );
   }
 
+  const noteFormRef = React.createRef();
+  const noteForm = () => (
+    <Togglable buttonLabel="new note" ref={noteFormRef}>
+      <NoteForm
+        onSubmit={addNote}
+        value={newNote}
+        handleChange={handleNoteChange}
+      />
+    </Togglable>
+  );
+
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -102,12 +113,12 @@ const App = props => {
 
   const addNote = event => {
     event.preventDefault();
+    noteFormRef.current.toggleVisibility();
     const noteObject = {
       content: newNote,
       date: new Date().toISOString(),
       important: Math.random() > 0.5,
-      id: notes.length + 1
-    }
+    };
 
     noteService
       .create(noteObject)
@@ -138,31 +149,23 @@ const App = props => {
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
-      {
-        user === null
-          ? loginForm()
-          : (<div>
-              <p>{user.name} logged in</p>
-              <Togglable buttonLabel='new note'>
-                <NoteForm
-                  onSubmit={addNote}
-                  value={newNote}
-                  handleChange={handleNoteChange}
-                />
-              </Togglable>
-            </div>)
-      }
+      {user === null ? (
+        loginForm()
+      ) : (
+        <div>
+          <p>{user.name} logged in</p>
+          {noteForm()}
+        </div>
+      )}
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
+          show {showAll ? "important" : "all"}
         </button>
       </div>
-      <ul>
-        {rows()}
-      </ul>
+      <ul>{rows()}</ul>
       <Footer />
     </div>
-  )
+  );
 }
 
 export default App;
