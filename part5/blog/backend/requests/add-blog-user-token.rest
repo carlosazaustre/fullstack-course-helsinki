@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNWQzOTQxY2I4ZDk0MGNiNjI3Yjg2MzY0IiwiaWF0IjoxNTY0MDM2MDg0fQ.fUuBfTHGH3JmHCrTtQXn0Gge_K1f9s3-n6yP0jrt-lA
+
+{
+  "title": "other one with token",
+  "author": "Token Master",
+  "url": "https://lordoftokens.com",
+  "likes": 0
+}

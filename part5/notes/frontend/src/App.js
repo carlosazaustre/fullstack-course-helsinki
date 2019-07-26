@@ -18,7 +18,7 @@ const App = props => {
   useEffect(() => {
     noteService
       .getAll()
-      .then(initialNotes => {
+    .then(initialNotes => {
         setNotes(initialNotes);
       });
   }, []);
@@ -46,7 +46,6 @@ const App = props => {
       setUsername('');
       setPassword('');
     } catch (exception) {
-      debugger;
       setErrorMessage('Wrong credentials');
       setTimeout(() => {
         setErrorMessage(null);

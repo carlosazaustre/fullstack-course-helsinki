@@ -1,0 +1,18 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+# {
+#   "title": "Things I don't know as of 2018",
+#   "author": "Dan Abramov",
+#   "url": "https://overreacted.io/things-i-dont-know-as-of-2018/",
+#   "likes": 0,
+#   "user": "5d3941cb8d940cb627b86364"
+# }
+
+{
+  "title": "Microservices and the First Law of Distributed objects",
+  "author": "Martin Fowler",
+  "url": "https://martinfowler.com/articles/microservices.html",
+  "likes": 0,
+  "user": "5d3941b48d940cb627b86363"
+}
