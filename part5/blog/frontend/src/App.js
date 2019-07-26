@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
+import LoginForm from './components/LoginForm';
 import Blog from './components/Blog';
+import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
+import Togglable from './components/Togglable';
 import blogService from './services/blog';
 import loginService from './services/login';
 
-const App = props => {
+const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -84,57 +87,20 @@ const App = props => {
     }, 2000);
   };
 
-  // SubComponents
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type='text'
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type='password'
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type='submit'>login</button>
-    </form>
-  );
-
-  const createBlogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>
-        title
-        <input 
-          type='text'
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
-      <div>
-        author
-        <input
-          type='text'
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        url
-        <input
-          type='text'
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button type='submit'>create</button>
-    </form>
+  const blogFormRef = React.createRef();
+  const blogForm = () => (
+    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      <h2>create new</h2>
+      <BlogForm
+        onSubmit={addBlog}
+        title={title}
+        author={author}
+        url={url}
+        handleTitleChange={({ target }) => setTitle(target.value)}
+        handleAuthorChange={({ target }) => setAuthor(target.value)}
+        handleUrlChange={({ target }) => setUrl(target.value)}
+      />
+    </Togglable>
   );
 
   // Render
@@ -144,7 +110,13 @@ const App = props => {
         <h2>log in to application</h2>
         <Notification message={notificationMessage} />
         <Notification type={"error"} message={errorMessage} />
-        {loginForm()}
+        <LoginForm
+          onSubmit={handleLogin}
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+        />
       </div>
     );
   }
@@ -158,8 +130,7 @@ const App = props => {
         {user.name} logged in.
         <button onClick={handleLogout}>logout</button>
       </p>
-      <h2>create new</h2>
-      {createBlogForm()}
+      {blogForm()}
       {blogs.map(blog => (
         <Blog key={blog.id} blog={blog} />
       ))}
