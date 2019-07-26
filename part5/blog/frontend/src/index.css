@@ -1,0 +1,13 @@
+.Notification {
+  color: green;
+  background-color: lightgray;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.Notification--error {
+  color: red;
+}

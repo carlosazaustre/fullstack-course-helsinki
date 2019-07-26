@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import Blog from './components/Blog';
+import Notification from './components/Notification';
 import blogService from './services/blog';
 import loginService from './services/login';
 
@@ -12,6 +13,8 @@ const App = props => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // State changes
   useEffect(() => {
@@ -46,7 +49,10 @@ const App = props => {
       setUsername('');
       setPassword('')
     } catch (exception) {
-      console.error(exception);
+      setErrorMessage(exception.response.data.error);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
     }
   };
 
@@ -70,6 +76,12 @@ const App = props => {
     setTitle('');
     setAuthor('');
     setUrl('');
+    setNotificationMessage(
+      `A new blog ${returnedBlog.title} by ${returnedBlog.author} added`
+    );
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 2000);
   };
 
   // SubComponents
@@ -130,14 +142,18 @@ const App = props => {
     return (
       <div>
         <h2>log in to application</h2>
+        <Notification message={notificationMessage} />
+        <Notification type={"error"} message={errorMessage} />
         {loginForm()}
       </div>
-    )
+    );
   }
 
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={notificationMessage} />
+      <Notification type={'error'} message={errorMessage} />
       <p>
         {user.name} logged in.
         <button onClick={handleLogout}>logout</button>
