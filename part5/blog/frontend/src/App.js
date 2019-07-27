@@ -131,7 +131,7 @@ const App = () => {
       <div>
         <h2>log in to application</h2>
         <Notification message={notificationMessage} />
-        <Notification type={"error"} message={errorMessage} />
+        <Notification type={'error'} message={errorMessage} />
         <LoginForm
           onSubmit={handleLogin}
           username={username}
