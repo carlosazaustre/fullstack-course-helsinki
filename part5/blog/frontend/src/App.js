@@ -88,6 +88,24 @@ const App = () => {
     }, 2000);
   };
 
+  const removeBlog = async (blog) => {
+    const option = window.confirm(`remove ${blog.title} by ${blog.author}`);
+    if (option) {
+      await blogService.remove(blog.id);
+    }
+    setBlogs(blogs.filter(b => b.id !== blog.id));
+  }
+
+  const updateBlog = async blog => {
+    const updated = await blogService.update(blog);
+    const updatedBlogs = blogs
+      .filter(b => b.id !== blog.id)
+      .concat(updated)
+      .sort((a, b) => b.likes - a.likes);
+
+    setBlogs(updatedBlogs);
+  };
+
   const blogFormRef = React.createRef();
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
@@ -133,7 +151,12 @@ const App = () => {
       </p>
       {blogForm()}
       {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleUpdate={() => updateBlog(blog)}
+          handleRemove={() => removeBlog(blog)}
+        />
       ))}
     </div>
   );
