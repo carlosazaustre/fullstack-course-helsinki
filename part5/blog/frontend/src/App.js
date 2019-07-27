@@ -76,6 +76,9 @@ const App = () => {
     };
 
     const returnedBlog = await blogService.create(blogObject);
+    returnedBlog.user = {
+      name: user.name,
+    };
     setBlogs(blogs.concat(returnedBlog));
     setTitle('');
     setAuthor('');
@@ -156,6 +159,7 @@ const App = () => {
           blog={blog}
           handleUpdate={() => updateBlog(blog)}
           handleRemove={() => removeBlog(blog)}
+          showRemoveButton={blog.user.name === user.name}
         />
       ))}
     </div>
