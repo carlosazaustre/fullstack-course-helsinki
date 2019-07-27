@@ -10,7 +10,7 @@ const setToken = newToken => {
 
 const unsetToken = () => {
   token = null;
-}
+};
 
 const getAll = async () => {
   const response = await axios.get(baseUrl);
@@ -23,11 +23,24 @@ const create = async (newObject) => {
   };
   const response = await axios.post(baseUrl, newObject, config);
   return response.data;
-}
+};
+
+const update = async (data) => {
+  const config = {
+    headers: { Authorization: token }
+  };
+  const response = await axios.put(
+    `${baseUrl}/${data.id}`,
+    data,
+    config
+  );
+  return response.data;
+};
 
 export default {
   setToken,
   unsetToken,
   getAll,
   create,
+  update,
 };
