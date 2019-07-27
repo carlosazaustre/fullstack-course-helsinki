@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const BlogForm = ({
   onSubmit,
@@ -37,5 +38,15 @@ const BlogForm = ({
     <button type="submit">create</button>
   </form>
 );
+
+BlogForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  handleTitleChange: PropTypes.func.isRequired,
+  handleAuthorChange: PropTypes.func.isRequired,
+  handleUrlChange: PropTypes.func.isRequired,
+};
 
 export default BlogForm;
