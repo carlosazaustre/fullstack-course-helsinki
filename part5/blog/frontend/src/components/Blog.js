@@ -20,7 +20,7 @@ const Blog = ({
 
   return (
     <div style={blogStyle}>
-      <div onClick={() => setVisible(!visible)}>
+      <div className='blog' onClick={() => setVisible(!visible)}>
         {blog.title} - {blog.author}
         <div className='info' style={showWhenVisible}>
           <a href={blog.url}>{blog.url}</a>
