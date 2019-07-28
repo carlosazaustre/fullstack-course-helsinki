@@ -35,10 +35,19 @@ describe('<Blog />', () => {
     )
   });
 
-  test('button of a component is pressed twice', () => {
+  test('button of a component is pressed twice handler is runngin twice', () => {
     const button = component.getByText('like');
     fireEvent.click(button);
     fireEvent.click(button);
     expect(mockHandleUpdate.mock.calls.length).toBe(2);
+  });
+
+  test('blog component render properly', () => {
+    const hiddenDiv = component.container.querySelector('.info');
+    expect(hiddenDiv).toHaveStyle('display: none');
+
+    const div = component.getByText('Test title - Test author');
+    fireEvent.click(div);
+    expect(div).toHaveStyle('');
   });
 });
