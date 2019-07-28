@@ -25,8 +25,19 @@ const blogs = [
   },
 ];
 
+const user = {
+  username: 'tester',
+  token: '1231231214',
+  name: 'Donald Tester'
+};
+
+let token = null;
+const setToken = () => {
+  token = `bearer ${user.token}`;
+};
+
 const getAll = () => {
   return Promise.resolve(blogs);
 }
 
-export default { getAll };
+export default { getAll, setToken };
